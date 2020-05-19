@@ -30,9 +30,9 @@ env:
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   SSH_ACTIONS: false
-  UPLOAD_BIN_DIR: false
+  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
+  UPLOAD_COWTRANSFER: true
   UPLOAD_WETRANSFER: false
   TZ: Asia/Shanghai
 
@@ -72,11 +72,12 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         ../$DIY_P1_SH
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
 
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+    - name: Update && Install feeds
+      run: |
+        cd openwrt
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
@@ -85,6 +86,7 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         ../$DIY_P2_SH
+
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
@@ -97,6 +99,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
+
     - name: Compile the firmware
       id: compile
       run: |
@@ -107,6 +110,7 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "::set-env name=DEVICE_NAME::_$(cat DEVICE_NAME)"
         echo "::set-env name=FILE_DATE::_$(date +"%Y%m%d%H%M")"
+
     - name: Upload bin directory
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -122,6 +126,7 @@ jobs:
         rm -rf packages
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
+
     - name: Upload firmware directory
       uses: actions/upload-artifact@master
       if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -135,6 +140,7 @@ jobs:
         curl -fsSL git.io/file-transfer | sh
         ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
+
     - name: Upload firmware to WeTransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
