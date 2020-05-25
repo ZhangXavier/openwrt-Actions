@@ -1,9 +1,9 @@
 #=================================================
-# https://github.com/P3TERX/Actions-OpenWrt
+# https://github.com/ZhangXavier/openwrt-Actions
 # Description: Build OpenWrt using GitHub Actions
 # Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
+# Author: P3TERX / Xavier
+# Blog: https://www.zxavier.com
 #=================================================
 
 name: Build OpenWrt
@@ -57,14 +57,13 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
         curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
+
     - name: Clone source code
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-    
-    - name: Clone helloworld code
       run: |
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt/package/lean
         git clone https://github.com/jerrykuku/lua-maxminddb.git
-        git clone https://github.com/jerrykuku/luci-app-vssr.git  
+        git clone https://github.com/jerrykuku/luci-app-vssr.git
 
     - name: Load custom feeds
       run: |
