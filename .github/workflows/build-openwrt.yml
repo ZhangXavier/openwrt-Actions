@@ -63,8 +63,6 @@ jobs:
       run: |
         df -hT $PWD
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        git clone https://github.com/jerrykuku/lua-maxminddb.git openwrt/package/lean/lua-maxminddb
-        git clone https://github.com/jerrykuku/luci-app-vssr.git openwrt/package/lean/luci-app-vssr
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
