@@ -150,10 +150,3 @@ jobs:
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-
-docker run -itd \
-    --name openwrt-build-env \
-    -h GCP \
-    -p 10022:22 \
-    -v $PWD:/home/user/openwrt \
-    p3terx/openwrt-build-env:18.04
