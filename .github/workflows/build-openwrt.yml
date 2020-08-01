@@ -1,17 +1,19 @@
-#=================================================
-# https://github.com/ZhangXavier/openwrt-Actions
+#
+# Copyright (c) 2019-2020 Xavier <https://zxavier.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/zhangXavier/openwrt-Actions/
 # Description: Build OpenWrt using GitHub Actions
-# Lisence: MIT
-# Author: P3TERX / Xavier
-# Blog: https://www.zxavier.com
-#=================================================
+#
 
 name: Build OpenWrt
 
 on:
   repository_dispatch:
   release:
-    types: [published]
+    types: published
   push:
     branches:
       - master
