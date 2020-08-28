@@ -47,7 +47,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
@@ -96,7 +96,7 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: SSH connection to Actions
-      uses: ZhangXavier/debugger-action@master
+      uses: P3TERX/debugger-action@main
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || (env.SSH_ACTIONS == 'true' && env.SSH_ACTIONS != 'false') || contains(github.event.action, 'ssh')
 
     - name: Download package
