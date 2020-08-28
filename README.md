@@ -21,6 +21,12 @@ It may take a long time to create a `.config` file and build the OpenWrt firmwar
 
 Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
 
+## OpenWrt firmware for Newifi D2
+
+Auto build OpenWrt firmware for Newifi D2 via GitHub Actions
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ZhangXavier/openwrt-Actions?style=for-the-badge&label=Download)](https://github.com/ZhangXavier/openwrt-Actions/releases/latest)
+
 ## Acknowledgments
 
 - [Microsoft](https://www.microsoft.com)
